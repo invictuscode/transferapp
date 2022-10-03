@@ -7,6 +7,7 @@ import Form from 'react-bootstrap/Form';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { signupemail, signinemail } from '../firebase';
 
 
 function Emailsignup() {
@@ -17,20 +18,11 @@ function Emailsignup() {
     console.log(email)
     console.log(password)
 
-    const auth = getAuth();
-    const createUser = ()=>{
-        createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            // Signed in 
-            const user = userCredential.user;
-            // ...
-            
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            // ..
-        });
+   
+    const createUser = (e)=>{
+        e.preventDefault()
+         signupemail(email, password)
+       
     }
 
     return (
@@ -40,7 +32,7 @@ function Emailsignup() {
             <h1 className="headerlog">Sign UP</h1>
 
             <div className='login_card shadow-lg p-3 mb-5 rounded'>
-                <Form>
+                <Form onSubmit={(e)=>{createUser(e)}}>
                     {/* <Form.Group className="mb-3" controlId="formBasicName"> 
 
                         <Form.Control type="name" placeholder="Hospital Name" />
@@ -57,7 +49,7 @@ function Emailsignup() {
                     </Form.Group>
 
 
-                    <Button variant="primary" type="submit" onClick={createUser}>
+                    <Button variant="primary" type="submit">
                         Submit
                     </Button>
                 </Form>

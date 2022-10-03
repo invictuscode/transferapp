@@ -1,6 +1,18 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import { getAuth, RecaptchaVerifier, signInWithPhoneNumber, createUserWithEmailAndPassword } from "firebase/auth";
+import React, { useState } from 'react'
+import 'react-phone-number-input/style.css'
+import PhoneInput from 'react-phone-number-input'
+import OtpInput from 'react-otp-input'
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+
+
+// import 'react-toastify/dist/ReactToastify.css';
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { toasterror, toastsuccess } from './Components/Toaster';
+import {Link} from 'react-router-dom'
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -32,7 +44,38 @@ const confirmotp=(phoneNumber)=>{
   
 }     
 
+const signinemail=(email, password)=>{
+  signInWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+      toastsuccess("Successfully signed in with email ✅")
+    // 
+  })
+
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.log(error)
+    toasterror('Incorrect credentials')
+  });
+}
+
+const signupemail=(email, password)=>{
+  createUserWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+      // Signed in 
+      signinemail(email,password)
+      // ...
+      
+  })
+  .catch((error) => {
+      toasterror("Something went wrong or user already exists")
+      // ..
+  });
+}
 
 
 
-export { auth, confirmotp };
+
+export { auth, confirmotp, signinemail, signupemail }

@@ -75,6 +75,17 @@ body{
   border-radius: 5px;
 }
 
+.hospitalname{
+  
+  color:white;
+}
+
+.transferquest{
+  color:white;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
 
 
 
