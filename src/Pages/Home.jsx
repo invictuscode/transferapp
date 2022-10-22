@@ -1,59 +1,62 @@
-import React from 'react'
+
+import React,{useEffect, useState} from 'react'
+import { getAuth, updateProfile } from "firebase/auth";
+import 'react-toastify/dist/ReactToastify.css';
+import Card from '../Components/Card';
 import { auth } from '../firebase'
 import { signOut } from 'firebase/auth'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { getAuth, updateProfile } from "firebase/auth";
+import Navbar from '../Components/Navbar'
+import {Link} from 'react-router-dom'
 
 function Home() {
+
   const auth = getAuth();
   const user = auth.currentUser;
 
 
   
   const hospitalname = user.displayName;
+
+
   
+  const [patientdata, setpatientdata]=useState([])
+
+  console.log(hospitalname)
 
 
-  const logout = () => {
-    signOut(auth)
-      .then(() => {
-        console.log('logout')
-console.log(hospitalname)
-      })
-      .catch(() => {
-        console.log('error')
-      })
-      
-  }
   return (
+
+
+
+
+
+    <>
+
+
+      <Navbar />
+
+      <div className="container d-flex text-white">
+        <div className="left_home w-65">
+          <h2>Welcome, {hospitalname} </h2>
+        </div>
+
+
+        <div className="right_home w-75 containcard d-flex flex-column justify-content-center pt-3">
+    <div className="containercard">
+     <button className="w-100"><Link to='/viewall' className="h-100 rounded speciallink">See all details of a patient</Link></button>
     
-   
-      
-      
-    
-    <div className='container'>
-      
-
-      <div onClick={logout} className=" logout w-100 mt-4 d-flex justify-content-end">
-        <h6 className='text-white me-2'>Logout</h6>
-
-        <i className="fi h4 fi-rr-sign-out-alt text-white"></i>
-      </div>
-      <h1 className='text-white'>Welcome, {hospitalname} </h1>
-
-      <div className="actions">
-        <button className="btn btn-warning">Create A Transfer Request</button>
-        <ul class="list-group mt-5 w-25">
-  <li class="list-group-item">Patient 1</li>
-  <li class="list-group-item">Patient 2</li>
-  <li class="list-group-item">Patient 3</li>
-  <li class="list-group-item">Patient 4</li>
-  <li class="list-group-item">Patient 5</li>
-</ul>
-        </div>  
+       <Card/>
+ 
     </div>
-    
+
+
+  
+          
+        </div>
+      </div>
+
+    </>
+
   )
 }
 

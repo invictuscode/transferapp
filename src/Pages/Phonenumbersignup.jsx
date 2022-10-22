@@ -48,7 +48,7 @@ export default function Phonenumbersignup() {
     }
 
     return (
-        <div className="App">
+        <div className="Login_page">
             <h1 className="headerlog">Sign UP</h1>
             <div className='login_card shadow-lg p-3 mb-5 rounded'>
                 <div className='d-flex'>
@@ -81,7 +81,7 @@ export default function Phonenumbersignup() {
                         Sign up
                     </button>
                 </div>
-            </div>
+            </div> 
         </div>
     )
 }

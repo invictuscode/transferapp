@@ -4,10 +4,10 @@ import PhoneInput from 'react-phone-number-input'
 import OtpInput from 'react-otp-input'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, updateProfile} from "firebase/auth";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { signupemail, signinemail } from '../firebase';
+// import { signupemail, signinemail } from '../firebase';
 
 
 function Emailsignup() {
@@ -15,19 +15,34 @@ function Emailsignup() {
     const [email, setemail] = useState("")
     const [password, setpassword] = useState("")
 
+    const [hospitalname, setHospitalname] = useState("")
+
     console.log(email)
     console.log(password)
 
    
     const createUser = (e)=>{
         e.preventDefault()
-         signupemail(email, password)
+        
+    
+      
+      
+        //  const auth = getAuth();
+        //  updateProfile(auth.currentUser, {
+        //      displayName: hospitalname
+        //  }).then(() => {
+        //      // Profile updated!
+        //      // ...
+        //  }).catch((error) => {
+        //      // An error occurred
+        //      // ...
+        //  });
        
     }
 
     return (
 
-        <div className="App">
+        <div className="Login_page">
        
             <h1 className="headerlog">Sign UP</h1>
 
@@ -48,6 +63,7 @@ function Emailsignup() {
                         <Form.Control type="password" placeholder="Password" onChange={(e) => { setpassword(e.target.value) }} />
                     </Form.Group>
 
+                    <div className="d-flex align-items-center justify-content-center hospitalname"><h5 className="me-3">Enter Hospital Name</h5> <input type="name" placeholder="Hospital Name" value={hospitalname} onChange={(e) => { setHospitalname(e.target.value) }} /></div>
 
                     <Button variant="primary" type="submit">
                         Submit

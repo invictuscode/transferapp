@@ -11,7 +11,7 @@ body{
   color:azure;
 }
 
-.App {
+.Login_page {
   height:100vh;
   display:flex;
   align-items: center;
@@ -92,4 +92,72 @@ body{
 /*Home*/
 .logout{
   cursor:pointer;
+}
+
+
+
+.w-65{
+  width:65%;
+}
+
+.w-35{
+  width:35%;
+}
+
+/* .containcard{
+  
+  
+} */
+
+.card{
+  padding:6px;
+  height:25% !important;
+  width:90%;
+  background:white;
+}
+
+.card p{
+  font-size:15px;
+  text-overflow: overflow;
+  white-space: nowrap;
+  overflow: hidden;
+  width:90%; /* some width */
+  font-size: 15px;
+}
+
+
+.card h6,p{
+  margin:0px !important;
+  
+}
+
+.home_page{
+  height:100vh;
+}
+
+.right_home{
+  height:85vh;
+}
+
+.containercard{
+  overflow-y: scroll;
+  height:100%;
+}
+
+.containercard {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+.containercard::-webkit-scrollbar { 
+  display: none;  /* Safari and Chrome */
+}
+
+.speciallink{
+  color:black;
+  text-decoration: none;
+
+}
+
+.speciallink:hover{
+  color:black
 }

@@ -25,7 +25,7 @@ function Login() {
   
     return (
 
-        <div className="App">
+        <div className="Login_page">
 
             <h1 className="headerlog">Login</h1>
 
