@@ -39,7 +39,7 @@ function App() {
             <Route path='/phonesignup' element={<Phonenumbersignup/>}/>
             <Route path='/transfer' element={<Transfer/>}/>
             <Route path='/transfercomplete' element={<Transfercomplete/>}/>
-            <Route path='/viewall' element={<Viewalldata/>} />
+            <Route path='/viewall/:id' element={<Viewalldata/>} />
             <Route path='/chat' element={<ChatUI/>} />
           </Routes>
           <ToastContainer/>

@@ -1,21 +1,8 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import firebase from '../firebase'
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
+import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router'
-const medium = {
-  backgroundColor: "#ddffff", borderLeft: "5px solid #2196F3"
-}
-
-const high = {
-  backgroundColor: "#ffcccb", borderLeft: "5px solid #FF0000"
-}
-
-const low = {
-  backgroundColor: "#b3f5ba", borderLeft: "5px solid #0cc221"
-}
-
 
 
 
@@ -30,42 +17,35 @@ function Card() {
   const [data, setdata] = useState([]);
   const [loader, setloader] = useState(true);
   const [singleDoc, setSingleDoc]=useState({})
-  const [rid, setrid] = useState("");
 
+  const {id} = useParams()
 
   const db=firebase.firestore()
 
-  function getData() {
-    ref.onSnapshot((querySnapshot) => {
-      const items = []
-      querySnapshot.forEach((doc) => {
-        items.push(doc.data())
-      })
-      setdata(items)
-      setloader(false)
-    })
-  }
 
-  function fetchSingle(e){
-    const documentname=localStorage.getItem('documentnamez')
-     console.log(documentname)
-    // e.preventDefault()
+
+  function fetchSingle(id) {
+
+
     db.collection("transferapps")
 
-    .doc(rid)
-    .get()
-    .then((snapshot)=>{
-      if(snapshot){
-        setSingleDoc(snapshot.data())
-      }
-    })
-// console.log(singleDoc.fname)
+      .doc(id)
+      .get()
+      .then((snapshot) => {
+        if (snapshot) {
+          setSingleDoc(snapshot.data())
+        }
+      })
+    // navigate("/viewall")
+
+     
+
   }
 
-  useEffect(() => {
-    getData()
-    // console.log(data)
-  }, [])
+  fetchSingle(id)
+
+
+
 
   function goHome(){
     navigate('/')
@@ -74,29 +54,16 @@ function Card() {
   return (
 <>
 
-<div className="d-flex align-items-center justify-content-center text-white">
+<div className="d-flex align-items-center justify-content-center text-white flex-column">
 
 
-     <div key={singleDoc.id}>
+   
 
-<h3>View Specific Patient Data</h3>
 
-<h5>Type Patient's ID from home page</h5>
 
-     <InputGroup className="mb-3">
-        <InputGroup.Text id="inputGroup-sizing-default">
-          Patient ID
-        </InputGroup.Text>
-        <Form.Control
-          aria-label="Default"
-          aria-describedby="inputGroup-sizing-default"
-          onChange={(e) => setrid(e.target.value)}
-        />
-         </InputGroup>
 
-     <button onClick={fetchSingle} className="btn btn-primary">Show Details</button>
-     <br/>
-     <br/>
+
+ 
      <button onClick={goHome} className="btn btn-primary">Go back</button>
     
       <h6>First Name: {singleDoc.fname}</h6>
@@ -119,8 +86,7 @@ function Card() {
       <h6>Mode of Transportation: {singleDoc.modeoftransportation}</h6>
       <h6>Patient Condition/Severity: {singleDoc.severe}</h6>
       
-   
-      </div>
+ 
      </div>
     
 

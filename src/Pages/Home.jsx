@@ -19,7 +19,7 @@ function Home() {
 
 
   
-  const [patientdata, setpatientdata]=useState([])
+
 
   console.log(hospitalname)
 
