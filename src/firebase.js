@@ -3,7 +3,7 @@
 import firebase from "firebase/compat/app";
 import 'firebase/compat/firestore'
 import "firebase/compat/storage";
-
+import { getStorage } from "firebase/compat/storage";
 // Import the functions you need from the SDKs you need
 
 import { getAuth, RecaptchaVerifier, signInWithPhoneNumber, createUserWithEmailAndPassword } from "firebase/auth";
@@ -84,6 +84,6 @@ const signupemail=(email, password)=>{
 
 firebase.initializeApp(firebaseConfig);
 
-const storage = firebase.storage();
+const storage = firebase.storage()
 
 export { firebase as default, storage, auth, confirmotp, signinemail, signupemail }

@@ -2,7 +2,7 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import firebase from '../firebase'
 import { Link } from 'react-router-dom'
-
+import { getAuth, updateProfile } from "firebase/auth";
 
 
 const medium = {
@@ -47,15 +47,24 @@ function Card() {
       })
   }
 
+
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+
+  
+  const hospitalname = user.displayName;
   return (
     <>
       {loader === false && (data.map((apps, i) => (
-        apps.status == 'pending' ? (
+        apps.status != 'rejected-'+hospitalname && apps.status !=  'accepted-'+hospitalname ? (
           <div key={i} className="card m-2 text-dark shadow rounded " style={(apps.severe == "Unstable") ? high : (apps.severe == "Fair") ? medium : low} >
             <div key={apps.id}>
-              <h5>Case #: {apps.id}</h5>
-              <h6>{apps.fname} {apps.lname} | {apps.hospitalname}</h6>
-              <p>{apps.reason}</p>
+              
+              <h5>{apps.fname} {apps.lname} | Hospital: {apps.hospitalname}</h5>
+              <h6>{apps.reason}</h6>
+              <h6>Case #: {apps.id}</h6>
+              
               <div className="w-100 d-flex justify-content-between">
 
 
@@ -64,10 +73,10 @@ function Card() {
                   
                   {/* <h5 className='mx-2'> */}
                   <button onClick={() => {
-                    editDoc({ status: "rejected", id: apps.id })
+                    editDoc({ status: 'rejected-'+hospitalname, id: apps.id })
                   }}>❌</button>
                   <button onClick={() => {
-                    editDoc({ status: "accepted", id: apps.id })
+                    editDoc({ status: "accepted-"+hospitalname, id: apps.id })
                   }}>✔</button>
                   <Link to={'/viewall/'+apps.id}> Show more </Link>
                 </div>

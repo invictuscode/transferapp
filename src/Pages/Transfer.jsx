@@ -7,6 +7,8 @@ import { linkWithCredential } from 'firebase/auth';
 import { useNavigate } from "react-router-dom";
 // import { nanoid } from 'nanoid'
 import ShortUniqueId from 'short-unique-id';
+import storage from '../firebase';
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 
 function Transfer() {
@@ -32,7 +34,7 @@ function Transfer() {
   const [modeoftransportation, setmodeoftransportation] = useState("")
   const [severe, setsevere] = useState("");
   const uid = new ShortUniqueId({ length: 6 });
-  const id=uid()
+  const id = uid()
   const status = "pending"
 
   console.log("firstname: " + fname)
@@ -55,11 +57,54 @@ function Transfer() {
   console.log("hospital num: " + hospitalnum)
   console.log("mode of transportation: " + modeoftransportation)
   console.log("severity: " + severe)
+
+
+
+
   const vitalinfo = "Temp: \r\nHeart Rate: \r\nBlood Pressure: \r\nPulse Ox: "
 
   const ref = firebase.firestore().collection("transferapps")
 
+  const [image, setimage] = useState(null);
+  const uniqID = new Date()
 
+  const imageupload = (e) => {
+    const fileimage = e.target.files;
+    setimage(fileimage)
+  }
+
+
+  var uploadlink = {};
+  function uploadimg(img) {
+    const storageRef = ref(storage, `images/${uniqID}.${img.name}`);
+
+    //Firebasecode
+    const uploadTask = uploadBytesResumable(storageRef, img);
+
+    uploadTask.on('state_changed',
+      (snapshot) => {
+
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log('Upload is ' + progress + '% done');
+
+      },
+      (error) => {
+        console.log(error)
+      },
+      () => {
+
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          console.log('File available at', downloadURL);
+          localStorage.setItem('Imagelink', downloadURL)
+         uploadlink.link=downloadURL
+        });
+      }
+    ); 
+
+  }
+
+
+  const link = uploadlink.link
   // Send data into firebase :)
   function createDoc(newDataObj) {
 
@@ -120,7 +165,7 @@ function Transfer() {
             Date of Admission
           </InputGroup.Text>
           <Form.Control
-          type="date"
+            type="date"
             aria-label="Default"
             aria-describedby="inputGroup-sizing-default"
             onChange={(e) => setdoa(e.target.value)}
@@ -302,14 +347,16 @@ function Transfer() {
           <Form.Group controlId="formFile" className="mb-3">
 
             <Form.Label className="text-white">Upload Face sheet</Form.Label>
-            <Form.Control type="file" />
+           <span> <Form.Control type="file" onChange={imageupload}/>
+           <br/>
+            <button className='btn btn-warning' onClick={uploadimg}>Confirm Upload</button></span>
           </Form.Group>
         </InputGroup>
 
         <InputGroup className="mb-3">
           <p className="text-white me-3"> Clinical Status </p>
           <div className="yesorno text-white">
-            <input list="status" name="statusz" id="statusz" onChange={(e) => { setsevere(e.target.value) }}/>
+            <input list="status" name="statusz" id="statusz" onChange={(e) => { setsevere(e.target.value) }} />
 
             <datalist id="status">
               <option value="Stable" />
@@ -323,7 +370,7 @@ function Transfer() {
 
 
         <button className="btn btn-primary" onClick={() => {
-          createDoc({ fname, lname, dob, doa, bedstatus, vitals, ventilatorval, drips, reason, othermedicalproblems, services, nursename, nursenum, docname, docnum, hospitalname, hospitalplace, hospitalnum, modeoftransportation, severe, id, status })
+          createDoc({ fname, lname, dob, doa, bedstatus, vitals, ventilatorval, drips, reason, othermedicalproblems, services, nursename, nursenum, docname, docnum, hospitalname, hospitalplace, hospitalnum, modeoftransportation, severe, id, status, link })
         }}>Send Transfer Request</button>
       </div>
     </div>

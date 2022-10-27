@@ -27,16 +27,16 @@ function Emailsignup() {
     
       
       
-        //  const auth = getAuth();
-        //  updateProfile(auth.currentUser, {
-        //      displayName: hospitalname
-        //  }).then(() => {
-        //      // Profile updated!
-        //      // ...
-        //  }).catch((error) => {
-        //      // An error occurred
-        //      // ...
-        //  });
+         const auth = getAuth();
+         updateProfile(auth.currentUser, {
+             displayName: hospitalname
+         }).then(() => {
+             // Profile updated!
+             // ...
+         }).catch((error) => {
+             // An error occurred
+             // ...
+         });
        
     }
 
