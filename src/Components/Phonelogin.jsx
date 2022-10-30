@@ -2,6 +2,7 @@ import {React, useState} from 'react'
 import PhoneInput from 'react-phone-number-input'
 import OtpInput from 'react-otp-input'
 import Button from 'react-bootstrap/Button';
+import { Link } from 'react-router-dom'
 
 import { confirmotp, emailpass } from '../firebase';
 import { toasterror, toastsuccess } from '../Components/Toaster';
@@ -28,8 +29,8 @@ export default function Phonelogin() {
             catch (error) {toasterror("Could not verify number 🤷‍♂️")}}
 
   return (
-    <div className='login_card shadow-lg p-3 mb-5 rounded'>
-        <h6 className="text-white text-center mx-4">To verify your identity, we will send you an authorization code</h6> <h6 className="text-white">(Text and Data Rates may apply)</h6>
+    <div className='login_card p-3 mb-5 rounded'>
+        <h6 className=" text-center mx-4">To verify your identity, we will send you an authorization code</h6> <h6 className="">(Text and Data Rates may apply)</h6>
     <div className='d-flex'>
         
     <PhoneInput
@@ -53,13 +54,16 @@ export default function Phonelogin() {
         separator={<span></span>}
     />  
 </div>
-<h6 className="text-white">Code will expire in 15 mins </h6> 
+<h6 className="">Code will expire in 15 mins </h6> 
 <div className=" w-100 d-flex justify-content-end">
 
     <button disabled={(otp.length == "6") ? false : true} className="btn btn-warning" onClick={confirms}>
         Login
     </button>
+    
+
 </div>
+<p className="">Don't have an account? </p><Link to='/phonesignup'>Sign up</Link>
 </div>
   )
 }

@@ -5,7 +5,8 @@ import { Link } from 'react-router-dom'
 import { getAuth, updateProfile } from "firebase/auth";
 import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { auth, db } from "../firebase";
-import { toastsuccess } from './Toaster';
+import Transferlogo from './Transferlogo';
+
  
 const medium = {
   backgroundColor: "#ddffff", borderLeft: "5px solid #2196F3"
@@ -20,7 +21,7 @@ const low = {
 }
 
 
-function Card() {
+function Rej() {
   const ref = firebase.firestore().collection("transferapps")
   const [data, setdata] = useState([]);
   const [loader, setloader] = useState(true);
@@ -61,17 +62,26 @@ function Card() {
   console.log(hospitalname)
   return (
     <>
+    <Transferlogo/>
       {loader === false && (data.map((apps, i) => (
-         apps.statusa.includes("accepted") != true && apps.rejected1 != "rejected-"+hospitalname && apps.rejected2 != "rejected-"+hospitalname && apps.rejected3 != "rejected-"+hospitalname && apps.rejected4 != "rejected-"+hospitalname && apps.rejected5 != "rejected-"+hospitalname && apps.rejected6 != "rejected-"+hospitalname && apps.rejected7 != "rejected-"+hospitalname ? (
+        
+        apps.rejected1.includes("rejected") == true ? (
 
-      
-          <div key={i} className="card m-2 text-dark shadow rounded " style={(apps.severe == "Unstable") ? high : (apps.severe == "Fair") ? medium : low} >
+        
+          <div key={i} className="card m-2 text-dark shadow rounded " >
             <div key={apps.id}>
 
+            
               
-              
-              <h5>{apps.fname} {apps.lname} | Hospital: {apps.hospitalnames}</h5>
-              <h6>Reason for Transfer: {apps.reason}</h6>
+              <h5>{apps.fname} {apps.lname} | Hospital From: {hospitalname}</h5>
+              <h6>Hospitals Rejected by: </h6>
+              <h6>{apps.rejected1.slice("9")}</h6>
+              <h6>{apps.rejected2.slice("9")}</h6>
+              <h6>{apps.rejected3.slice("9")}</h6>
+              <h6>{apps.rejected4.slice("9")}</h6>
+              <h6>{apps.rejected5.slice("9")}</h6>
+              <h6>{apps.rejected6.slice("9")}</h6>
+              <h6>{apps.rejected7.slice("9")}</h6>
               <h6>Case #: {apps.id}</h6>
               
               <div className="w-100 d-flex justify-content-between">
@@ -81,29 +91,7 @@ function Card() {
 
                   
                   {/* <h5 className='mx-2'> */}
-                  <button onClick={() => {
-                   if(apps.rejected1==""){
-                    editDoc({ rejected1: "rejected-"+hospitalname, id: apps.id })
-                   } else if (apps.rejected2==""){
-                    editDoc({ rejected2: "rejected-"+hospitalname, id: apps.id })
-                   } else if (apps.rejected3==""){
-                    editDoc({ rejected3: "rejected-"+hospitalname, id: apps.id })
-                   } else if (apps.rejected4==""){
-                    editDoc({ rejected4: "rejected-"+hospitalname, id: apps.id })
-                   } else if (apps.rejected5==""){
-                    editDoc({ rejected5: "rejected-"+hospitalname, id: apps.id })
-                   } else if (apps.rejected6==""){
-                    editDoc({ rejected6: "rejected-"+hospitalname, id: apps.id })
-                   } else if (apps.rejected7==""){
-                    editDoc({ rejected: "rejected-"+hospitalname, id: apps.id })
-                   }
-                  
-                  }}>❌ Reject Transfer</button>
-                  <button onClick={() => {
-                     editDoc({ statusa: "accepted-"+hospitalname, id: apps.id })
-                  }}>✔ Accept Transfer</button>
-
-                 <button><Link to={'/viewall/'+apps.id} className="linknon"> ℹ View Details </Link></button>
+                 
                 </div>
               </div>
             </div>
@@ -131,7 +119,7 @@ function Card() {
   )
 }
 
-export default Card
+export default Rej
 
 
 // CREATE A COLLECTION HOSPITAL INFO

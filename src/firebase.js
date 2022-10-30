@@ -3,6 +3,7 @@
 import firebase from "firebase/compat/app";
 import 'firebase/compat/firestore'
 import "firebase/compat/storage";
+
 import { getStorage } from "firebase/compat/storage";
 // Import the functions you need from the SDKs you need
 
@@ -86,4 +87,6 @@ firebase.initializeApp(firebaseConfig);
 
 const storage = firebase.storage()
 
-export { firebase as default, storage, auth, confirmotp, signinemail, signupemail }
+const db = firebase.firestore()
+
+export { firebase as default, storage, auth, confirmotp, signinemail, signupemail, db }

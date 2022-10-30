@@ -20,7 +20,7 @@ function Emaillogin() {
         signinemail(email, password)
     }
     return (
-        <div className='login_card shadow-lg p-3 mb-5 rounded'>
+        <div className='login_card p-3 mb-5 rounded'>
             <Form>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
 
@@ -39,7 +39,7 @@ function Emaillogin() {
                 </Button>
 
             </Form>
-            <p className="text-white">Don't have an email account? </p><Link to='/signup'>Sign up</Link>
+            <p className="">Don't have an email account? </p><Link to='/signupemail'>Sign up</Link>
 
         </div>
     )

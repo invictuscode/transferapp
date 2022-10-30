@@ -7,6 +7,7 @@ import Form from 'react-bootstrap/Form';
 import { getAuth, createUserWithEmailAndPassword, updateProfile} from "firebase/auth";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Transferlogo from './Transferlogo';
 // import { signupemail, signinemail } from '../firebase';
 
 
@@ -41,12 +42,13 @@ function Emailsignup() {
     }
 
     return (
-
+        <>
+<Transferlogo/>
         <div className="Login_page">
        
             <h1 className="headerlog">Sign UP</h1>
 
-            <div className='login_card shadow-lg p-3 mb-5 rounded'>
+            <div className='login_card p-3 mb-5 rounded'>
                 <Form onSubmit={(e)=>{createUser(e)}}>
                     {/* <Form.Group className="mb-3" controlId="formBasicName"> 
 
@@ -74,7 +76,7 @@ function Emailsignup() {
 
 
         </div>
-
+        </>
     )
 
 }

@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 
 function Transfercomplete() {
   return (
-    <div className="App text-white">
+    <div className="App">
         <div className="mt-5 d-flex justify-content-center align-items-center">
             <h1>Transfer Successfully Sent! ✔</h1>
         </div>

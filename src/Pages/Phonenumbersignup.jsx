@@ -3,8 +3,10 @@ import PhoneInput from 'react-phone-number-input'
 import OtpInput from 'react-otp-input'
 import Button from 'react-bootstrap/Button';
 import { getAuth, updateProfile } from "firebase/auth";
-import { confirmotp, emailpass } from '../firebase';
+import { confirmotp, emailpass, db } from '../firebase';
 import { toasterror, toastsuccess } from '../Components/Toaster';
+import { doc, setDoc } from "firebase/firestore";
+import Transferlogo from './Transferlogo';
 
 export default function Phonenumbersignup() {
     const [otp, setOTP] = useState("");
@@ -22,24 +24,36 @@ export default function Phonenumbersignup() {
         }
 
     }
-
+    const chatsignup=()=>{
+        const auth = getAuth();
+        const user = auth.currentUser;
+        const hospitalname = user.displayName;
+        setDoc(doc(db, "users", user.uid), {
+            username: hospitalname,
+            userId: user.uid,
+            timestamp: new Date(),
+        })
+    }
     const confirms = async () => {
         try {
             await cap.confirm(otp)
             toastsuccess("Number Verified")
             console.log(hospitalname)
-
+       
             const auth = getAuth();
             updateProfile(auth.currentUser, {
                 displayName: hospitalname
             }).then(() => {
-                // Profile updated!
-                // ...
+                chatsignup()
             }).catch((error) => {
                 // An error occurred
                 // ...
             });
-
+            
+            
+          
+          
+          
         }
         catch (error) {
             toasterror("Could not verify number!")
@@ -47,10 +61,15 @@ export default function Phonenumbersignup() {
         }
     }
 
+   
+    
     return (
+
+        <>
+        <Transferlogo/>
         <div className="Login_page">
             <h1 className="headerlog">Sign UP</h1>
-            <div className='login_card shadow-lg p-3 mb-5 rounded'>
+            <div className='login_card p-3 mb-5 rounded'>
                 <div className='d-flex'>
                     <PhoneInput
                         placeholder="Enter phone number"
@@ -77,11 +96,16 @@ export default function Phonenumbersignup() {
                 </div>
                 <div className="d-flex align-items-center justify-content-center hospitalname"><h5 className="me-3">Enter Hospital Name</h5> <input type="name" placeholder="Hospital Name" value={hospitalname} onChange={(e) => { setHospitalname(e.target.value) }} /></div>
                 <div className="mt-5 w-100 d-flex justify-content-end">
-                    <button disabled={(otp.length == "6" & hospitalname.length != 0) ? false : true} className="btn btn-warning" onClick={confirms}>
+                    <button disabled={(otp.length == "6" & hospitalname.length != 0) ? false : true} className="btn btn-warning" onClick={()=>{
+                        confirms()
+                        
+                    }}>
                         Sign up
                     </button>
+                   
                 </div>
             </div> 
         </div>
+        </>
     )
 }

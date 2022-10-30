@@ -1,18 +1,23 @@
 @import url('https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css');
 
 
+
 body{
-  background-color: #282c34 !important;
+  background-image: url("./Pages/bg.jpg");
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-attachment: fixed;
+  color:black;
 }
 
 
 
 .headerlog{
-  color:azure;
+  color:black;
 }
 
 .Login_page {
-  height:100vh;
+
   display:flex;
   align-items: center;
   justify-content: center;
@@ -24,9 +29,9 @@ body{
 }
 
 .icons{
-  
+ 
   margin-bottom: 2px;
-  background-color: #282c34;
+  /* background-color: #282c34; */
   height:50px;
   width:600px;
   display:flex;
@@ -35,9 +40,9 @@ body{
 }
 
 .otp input{
-  background-color: #282c34;
-  border-color:white;
-  color:white;
+  background-color: white;
+  border-color:black;
+  color:black;
   border-radius: 5px !important;
   width: 2rem !important;
   margin: 5px !important;
@@ -45,9 +50,9 @@ body{
 
 .PhoneInputInput {
   border-radius:5px !important;
-  background-color: #282c34; 
-  border-color:white;
-  color:azure;
+  background-color: white; 
+  border-color:black;
+  color:black;
 
 }
 
@@ -77,11 +82,11 @@ body{
 
 .hospitalname{
   
-  color:white;
+  color:black;
 }
 
 .transferquest{
-  color:white;
+  color:black;
   display:flex;
   justify-content: center;
   align-items: center;
@@ -160,4 +165,53 @@ body{
 
 .speciallink:hover{
   color:black
+}
+
+
+.mainheader{
+  color:black;
+  font-size: 50px;
+  margin-left:10px;
+}
+
+
+.m2{
+  color:red;
+}
+
+.infoz{
+  font-size:larger;
+  font-weight: bold;
+}
+
+
+.m22{
+  color:red;
+}
+
+.homelinks{
+  text-decoration: none;
+}
+
+
+.pinformation{
+  margin-left: 25%;
+}
+
+.pinformation h6{
+  font-size: 25px;
+}
+
+
+.finame{
+  color:red;
+}
+
+.linknon{
+  text-decoration: none;
+  color:black;
+}
+
+.linknon:hover{
+  color:black;
 }

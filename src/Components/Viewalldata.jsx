@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import firebase from '../firebase'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router'
+import Transferlogo from '../Pages/Transferlogo'
 
 
 
@@ -54,7 +55,9 @@ function Card() {
   return (
 <>
 
-<div className="d-flex align-items-center justify-content-center text-white flex-column">
+<Transferlogo/>
+
+<div className="d-flex justify-content-center flex-column">
 
 
    
@@ -64,29 +67,37 @@ function Card() {
 
 
  
-     <button onClick={goHome} className="btn btn-primary">Go back</button>
+     <div className="pinformation">
     
-      <h6>First Name: {singleDoc.fname}</h6>
-      <h6>Last Name: {singleDoc.lname}</h6>
-      <h6>Date of Birth: {singleDoc.dob}</h6>
-      <h6>Date of Admission: {singleDoc.doa}</h6>
-      <h6>Bed Status: {singleDoc.bedstatus}</h6>
-      <h6>Vitals: {singleDoc.vitals}</h6>
-      <h6>Is the patient on Ventilator?: {singleDoc.ventilatorval}</h6>
-      <h6>Drips: {singleDoc.drips}</h6>
-      <h6>Reason for Transfer: {singleDoc.reason}</h6>
-      <h6>Other Medical Problems: {singleDoc.othermedicalproblems}</h6>
-      <h6>Services: {singleDoc.services}</h6>
-      <h6>Nurse Name: {singleDoc.nursename}</h6>
-      <h6>Nurse Number: {singleDoc.nursenum}</h6>
-      <h6>Physician Name: {singleDoc.docname}</h6>
-      <h6>Physician's Phone Number: {singleDoc.docnum}</h6>
-      <h6>Hospital Name: {singleDoc.hospitalname}</h6>
-      <h6>Hospital Phone Number: {singleDoc.hospitalnum}</h6>
-      <h6>Mode of Transportation: {singleDoc.modeoftransportation}</h6>
-      <h6>Patient Condition/Severity: {singleDoc.severe}</h6>
+      <h6><span className="finame">First Name: </span> {singleDoc.fname}</h6>
+      <h6><span className="finame">Last Name :</span>{singleDoc.lname}</h6>
+      <h6><span className="finame">Date of Birth: </span>{singleDoc.dob}</h6>
+      <br/>
+      <h6><span className="finame">Date of Admission: </span>{singleDoc.doa}</h6>
+      <h6><span className="finame">Bed Status: </span>{singleDoc.bedstatus}</h6>
+      <br/>
+      <h6><span className="finame">Vital Signs: </span>{singleDoc.vitals}</h6>
+      <h6><span className="finame">Is Patient on Ventilator: </span>{singleDoc.ventilatorval}</h6>
+      <h6><span className="finame">Drips: </span>{singleDoc.drips}</h6>
+      <br/>
+      <h6><span className="finame">Reason for Transfer: </span>{singleDoc.reason}</h6>
+      <h6><span className="finame">Other Medical Problems: </span> {singleDoc.othermedicalproblems}</h6>
+      <h6><span className="finame">Services: </span>{singleDoc.services}</h6>
+      <br/>
+      <h6><span className="finame">Nurse Name: </span> {singleDoc.nursename}</h6>
+      <h6><span className="finame">Nurse Phone Number: </span>{singleDoc.nursenum}</h6>
+      <h6><span className="finame">Physician's Name: </span>{singleDoc.docname}</h6>
+      <h6><span className="finame">Physician's Phone Number: </span>{singleDoc.docnum}</h6>
+      <br/>
+      <h6><span className="finame">Hospital Name: </span>{singleDoc.hospitalnames}</h6>
+      <h6><span className="finame">Hospital Phone Number: </span>{singleDoc.hospitalnum}</h6>
+      <br/>
+      <h6><span className="finame">Mode of Transportation: </span>{singleDoc.modeoftransportation}</h6>
+      <h6><span className="finame">Patient Condition/Severity: </span>{singleDoc.severe}</h6>
+      <br/>
+      <h6><span className="finame">Facesheet PDF Link: </span><a href={singleDoc.url}>View Facesheet</a></h6>
       
- 
+      </div>
      </div>
     
 

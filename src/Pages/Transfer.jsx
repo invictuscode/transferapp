@@ -1,15 +1,17 @@
 import React, { useState } from 'react'
 import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
-import { v4 as uuidv4 } from 'uuid'
+import { doc, setDoc } from "firebase/firestore";
 import firebase from '../firebase'
-import { linkWithCredential } from 'firebase/auth';
 import { useNavigate } from "react-router-dom";
-// import { nanoid } from 'nanoid'
+import { auth, db } from "../firebase";
 import ShortUniqueId from 'short-unique-id';
-import storage from '../firebase';
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { v4 as uuidv4 } from 'uuid';
+import {storage} from '../Pages/Firebase/index'
 
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { getAuth, updateProfile } from "firebase/auth";
+import Transferlogo from './Transferlogo';
 
 function Transfer() {
   const navigate = useNavigate();
@@ -28,14 +30,17 @@ function Transfer() {
   const [nursenum, setnursenum] = useState("")
   const [docname, setdocname] = useState("")
   const [docnum, setdocnum] = useState("")
-  const [hospitalname, sethospitalname] = useState("")
+  const [hospitalnames, sethospitalname] = useState("")
   const [hospitalplace, sethospitalplace] = useState("")
   const [hospitalnum, sethospitalnum] = useState("")
   const [modeoftransportation, setmodeoftransportation] = useState("")
   const [severe, setsevere] = useState("");
   const uid = new ShortUniqueId({ length: 6 });
   const id = uid()
-  const status = "pending"
+
+
+
+
 
   console.log("firstname: " + fname)
   console.log("lastname: " + lname)
@@ -52,7 +57,7 @@ function Transfer() {
   console.log("nurse number: " + nursenum)
   console.log("physician name: " + docname)
   console.log("doctor number: " + docnum)
-  console.log("hospital name: " + hospitalname)
+  console.log("hospital name: " + hospitalnames)
   console.log("hospital place: " + hospitalplace)
   console.log("hospital num: " + hospitalnum)
   console.log("mode of transportation: " + modeoftransportation)
@@ -63,66 +68,106 @@ function Transfer() {
 
   const vitalinfo = "Temp: \r\nHeart Rate: \r\nBlood Pressure: \r\nPulse Ox: "
 
-  const ref = firebase.firestore().collection("transferapps")
-
-  const [image, setimage] = useState(null);
-  const uniqID = new Date()
-
-  const imageupload = (e) => {
-    const fileimage = e.target.files;
-    setimage(fileimage)
-  }
+  const refs = firebase.firestore().collection("transferapps")
 
 
-  var uploadlink = {};
-  function uploadimg(img) {
-    const storageRef = ref(storage, `images/${uniqID}.${img.name}`);
+  
+  //Upload to Firebase Storage :)
+  const [image, setImage] = useState(null);
+  const [url, setUrl] = useState("");
+  const [progress, setProgress] = useState(0);
+  const [imgurl, setURL] = useState("")
+  const handleChange = e => {
+    if (e.target.files[0]) {
+      setImage(e.target.files[0]);
+    }
+  };
 
-    //Firebasecode
-    const uploadTask = uploadBytesResumable(storageRef, img);
-
-    uploadTask.on('state_changed',
-      (snapshot) => {
-
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log('Upload is ' + progress + '% done');
-
+  const handleUpload = () => {
+    const folname=uuidv4();
+    const uploadTask = storage.ref(`${folname}/facsheet.pdf`).put(image);
+    uploadTask.on(
+      "state_changed",
+      snapshot => {
+        const progress = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        setProgress(progress);
       },
-      (error) => {
-        console.log(error)
+      error => {
+        console.log(error);
       },
-      () => {
-
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          console.log('File available at', downloadURL);
-          localStorage.setItem('Imagelink', downloadURL)
-         uploadlink.link=downloadURL
-        });
+      () => 
+      {const lolname=folname
+        storage
+        
+          .ref(`${lolname}`)
+          .child("facsheet.pdf")
+          .getDownloadURL()
+          .then(url => {
+            setUrl(url);
+          });
       }
-    ); 
+    );
+    
+  }; 
+
+  console.log("image: ", image);
+console.log(url)
+
+  const hospitalname = localStorage.getItem('hospitalname');
+
+  const status = "pending-" + hospitalname + "-"
+
+  console.log(status)
+
+  function createDoc() {
+
+
+    setDoc(doc(db, "transferapps", id), {
+      fname: fname,
+      lname: lname,
+      dob: dob,
+      doa: doa,
+      bedstatus: bedstatus,
+      vitals: vitals,
+      ventilatorval: ventilatorval,
+      drips: drips,
+      reason: reason,
+      othermedicalproblems: othermedicalproblems,
+      services: services,
+      nursename: nursename,
+      nursenum: nursenum,
+      docname: docname,
+      docnum: docnum,
+      hospitalnames: hospitalnames,
+      hospitalplace: hospitalplace,
+      hospitalnum: hospitalnum,
+      modeoftransportation: modeoftransportation,
+      severe: severe,
+      id: id,
+      status:"pending-"+hospitalname,
+      url:url,
+      statusa:"",
+      rejected1:"",
+      rejected2:"",
+      rejected3:"",
+      rejected4:"",
+      rejected5:"",
+      rejected6:"",
+      rejected7:"",
+    });
 
   }
 
-
-  const link = uploadlink.link
-  // Send data into firebase :)
-  function createDoc(newDataObj) {
-
-    console.log('✔')
-    ref
-      .doc(id)
-      .set(newDataObj)
-      .catch((err) => {
-        alert(err)
-        console.error(err)
-      })
-
-    navigate("/Transfercomplete");
-  }
   return (
+    <>
+    <Transferlogo/>
     <div className="container d-flex justify-content-center align-items-center flex-column">
+      
       <div className="header">
-        <h1 className="text-white">Create A Transfer Request</h1>
+       
+        <h1 className="">Create A Transfer Request</h1>
       </div>
 
       <div className="info w-50">
@@ -201,8 +246,8 @@ function Transfer() {
 
 
         <InputGroup className="mb-3">
-          <p className="text-white me-3"> Is the Patient on a ventilator?</p>
-          <div className="yesorno text-white">
+          <p className=" me-3"> Is the Patient on a ventilator?</p>
+          <div className="yesorno">
             <span><input type="radio" name="radiobtn" value="Yes" onChange={(e) => { setventilatorval("yes") }} /> Yes</span>
 
             <span><input type="radio" name="radiobtn" value="No" onChange={(e) => { setventilatorval("no") }} /> No</span>
@@ -335,8 +380,8 @@ function Transfer() {
         </InputGroup>
 
         <InputGroup className="mb-3">
-          <p className="text-white me-3"> Mode of Transportation </p>
-          <div className="yesorno text-white">
+          <p className=" me-3"> Mode of Transportation </p>
+          <div className="yesorno">
             <span><input type="radio" name="transport" className="radio" onChange={(e) => { setmodeoftransportation("Ambulance") }} /> Ambulance</span>
 
             <span><input type="radio" name="transport" className="radio" onChange={(e) => { setmodeoftransportation("Air Transport") }} /> Air Transport</span>
@@ -346,16 +391,20 @@ function Transfer() {
         <InputGroup className="mb-3">
           <Form.Group controlId="formFile" className="mb-3">
 
-            <Form.Label className="text-white">Upload Face sheet</Form.Label>
-           <span> <Form.Control type="file" onChange={imageupload}/>
+            <Form.Label className="">Upload Face sheet</Form.Label>
+           <span> <Form.Control type="file" onChange={handleChange} multiple/>
            <br/>
-            <button className='btn btn-warning' onClick={uploadimg}>Confirm Upload</button></span>
+           <p>Progress:</p>
+    
+     
+       <progress value={progress} max="100" />
+            <button className='btn btn-warning' onClick={handleUpload}>Confirm Upload</button></span>
           </Form.Group>
         </InputGroup>
 
         <InputGroup className="mb-3">
-          <p className="text-white me-3"> Clinical Status </p>
-          <div className="yesorno text-white">
+          <p className=" me-3"> Clinical Status </p>
+          <div className="yesorno">
             <input list="status" name="statusz" id="statusz" onChange={(e) => { setsevere(e.target.value) }} />
 
             <datalist id="status">
@@ -370,10 +419,14 @@ function Transfer() {
 
 
         <button className="btn btn-primary" onClick={() => {
-          createDoc({ fname, lname, dob, doa, bedstatus, vitals, ventilatorval, drips, reason, othermedicalproblems, services, nursename, nursenum, docname, docnum, hospitalname, hospitalplace, hospitalnum, modeoftransportation, severe, id, status, link })
+          createDoc()
+          navigate("/transfercomplete")
         }}>Send Transfer Request</button>
       </div>
     </div>
+    
+    
+</>
   )
 }
 
